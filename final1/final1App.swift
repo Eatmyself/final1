@@ -6,12 +6,31 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct final1App: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var login = false
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group{
+                if login{
+                    ContentView()
+                }
+                else{
+                    loginn()
+                }
+            }
+            .onAppear {
+                Auth.auth().addStateDidChangeListener { auth, user in
+                   if let user = user {
+                    login = true
+                   } else {
+                    login = false
+                   }
+                }
+            }
         }
     }
 }
